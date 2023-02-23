@@ -384,7 +384,7 @@ class Filesystem {
 	/**
 	 * Get the default filesystem view
 	 */
-	public static function getView(): View {
+	public static function getView(): ?View {
 		if (!self::$defaultInstance) {
 			/** @var IUserSession $session */
 			$session = \OC::$server->get(IUserSession::class);
