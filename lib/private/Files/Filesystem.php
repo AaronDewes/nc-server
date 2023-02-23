@@ -42,6 +42,7 @@ use OC\Files\Mount\MountPoint;
 use OC\User\NoUserException;
 use OCP\EventDispatcher\IEventDispatcher;
 use OCP\Files\Events\Node\FilesystemTornDownEvent;
+use OCP\Files\Mount\IMountManager;
 use OCP\Files\NotFoundException;
 use OCP\Files\Storage\IStorageFactory;
 use OCP\IUser;
@@ -61,14 +62,10 @@ class Filesystem {
 	 */
 	private static $defaultInstance;
 
-	private static $usersSetup = [];
-
-	private static $normalizedPathCache = null;
-
-	private static $listeningForProviders = false;
+	private static ?CappedMemoryCache $normalizedPathCache = null;
 
 	/** @var string[]|null */
-	private static $blacklist = null;
+	private static ?array $blacklist = null;
 
 	/**
 	 * classname which used for hooks handling
@@ -232,17 +229,15 @@ class Filesystem {
 	 */
 	public static function getLoader() {
 		if (!self::$loader) {
-			self::$loader = \OC::$server->query(IStorageFactory::class);
+			self::$loader = \OC::$server->get(IStorageFactory::class);
 		}
 		return self::$loader;
 	}
 
 	/**
 	 * Returns the mount manager
-	 *
-	 * @return \OC\Files\Mount\Manager
 	 */
-	public static function getMountManager($user = '') {
+	public static function getMountManager(): Mount\Manager {
 		self::initMountManager();
 		return self::$mounts;
 	}
@@ -320,7 +315,7 @@ class Filesystem {
 		return [$mount->getStorage(), rtrim($mount->getInternalPath($path), '/')];
 	}
 
-	public static function init($user, $root) {
+	public static function init(string|IUser|null $user, string $root): bool {
 		if (self::$defaultInstance) {
 			return false;
 		}
@@ -332,7 +327,7 @@ class Filesystem {
 		return true;
 	}
 
-	public static function initInternal($root): bool {
+	public static function initInternal(string $root): bool {
 		if (self::$defaultInstance) {
 			return false;
 		}
@@ -342,32 +337,28 @@ class Filesystem {
 		$eventDispatcher = \OC::$server->get(IEventDispatcher::class);
 		$eventDispatcher->addListener(FilesystemTornDownEvent::class, function () {
 			self::$defaultInstance = null;
-			self::$usersSetup = [];
 			self::$loaded = false;
 		});
 
-		if (!self::$mounts) {
-			self::$mounts = \OC::$server->getMountManager();
-		}
+		self::initMountManager();
 
 		self::$loaded = true;
 
 		return true;
 	}
 
-	public static function initMountManager() {
+	public static function initMountManager(): void {
 		if (!self::$mounts) {
-			self::$mounts = \OC::$server->getMountManager();
+			self::$mounts = \OC::$server->get(IMountManager::class);
 		}
 	}
 
 	/**
 	 * Initialize system and personal mount points for a user
 	 *
-	 * @param string|IUser|null $user
 	 * @throws \OC\User\NoUserException if the user is not available
 	 */
-	public static function initMountPoints($user = '') {
+	public static function initMountPoints(string|IUser|null $user = ''): void {
 		/** @var IUserManager $userManager */
 		$userManager = \OC::$server->get(IUserManager::class);
 
