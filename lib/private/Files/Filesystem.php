@@ -50,10 +50,7 @@ use OCP\IUserManager;
 use OCP\IUserSession;
 
 class Filesystem {
-	/**
-	 * @var ?Mount\Manager $mounts
-	 */
-	private static $mounts;
+	private static ?Mount\Manager $mounts;
 
 	public static bool $loaded = false;
 
@@ -184,10 +181,7 @@ class Filesystem {
 	public const signal_param_mount_type = 'mounttype';
 	public const signal_param_users = 'users';
 
-	/**
-	 * @var ?\OC\Files\Storage\StorageFactory $loader
-	 */
-	private static $loader;
+	private static ?\OC\Files\Storage\StorageFactory $loader;
 
 	private static bool $logWarningWhenAddingStorageWrapper = true;
 
@@ -239,6 +233,7 @@ class Filesystem {
 	 */
 	public static function getMountManager(): Mount\Manager {
 		self::initMountManager();
+		assert(self::$mounts !== null);
 		return self::$mounts;
 	}
 
