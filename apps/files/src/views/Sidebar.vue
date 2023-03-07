@@ -36,10 +36,17 @@
 		@closed="handleClosed">
 		<!-- TODO: create a standard to allow multiple elements here? -->
 		<template v-if="fileInfo" #description>
-			<LegacyView v-for="view in views"
-				:key="view.cid"
-				:component="view"
-				:file-info="fileInfo" />
+			<!-- TODO Remove inline styles -->
+			<div style="display: grid; width: 100%; gap: 8px 0;">
+				<NcSelectTags v-if="isSystemTagsEnabled"
+					class="app-sidebar__select-tags"
+					v-show="showSystemTags"
+					v-model="appliedTags" />
+				<LegacyView v-for="view in views"
+					:key="view.cid"
+					:component="view"
+					:file-info="fileInfo" />
+			</div>
 		</template>
 
 		<!-- Actions menu -->
@@ -92,6 +99,7 @@ import { Type as ShareTypes } from '@nextcloud/sharing'
 import NcAppSidebar from '@nextcloud/vue/dist/Components/NcAppSidebar'
 import NcActionButton from '@nextcloud/vue/dist/Components/NcActionButton'
 import NcEmptyContent from '@nextcloud/vue/dist/Components/NcEmptyContent'
+import NcSelectTags from '@nextcloud/vue/dist/Components/NcSelectTags.js'
 
 import FileInfo from '../services/FileInfo'
 import SidebarTab from '../components/SidebarTab'
@@ -101,10 +109,11 @@ export default {
 	name: 'Sidebar',
 
 	components: {
+		LegacyView,
 		NcActionButton,
 		NcAppSidebar,
 		NcEmptyContent,
-		LegacyView,
+		NcSelectTags,
 		SidebarTab,
 	},
 
@@ -112,6 +121,9 @@ export default {
 		return {
 			// reactive state
 			Sidebar: OCA.Files.Sidebar.state,
+			showSystemTags: false,
+			selectedTagsCollection: null,
+			appliedTags: [],
 			error: null,
 			loading: true,
 			fileInfo: null,
@@ -410,9 +422,33 @@ export default {
 		 * Toggle the tags selector
 		 */
 		toggleTags() {
+			this.showSystemTags = !this.showSystemTags
 			if (OCA.SystemTags && OCA.SystemTags.View) {
 				OCA.SystemTags.View.toggle()
 			}
+		},
+
+		// TODO Feature parity
+		// TODO Create and delete tags
+		// - apps/systemtags/src/systemtagsinfoview.js
+		// - core/src/systemtags/systemtagsinputfield.js
+		// - core/src/systemtags/systemtagsmappingcollection.js
+
+		fetchTags(fileInfo) {
+			this.selectedTagsCollection = new OC.SystemTags.SystemTagsMappingCollection([], {
+				objectType: 'files',
+				objectId: fileInfo.id,
+			})
+
+			this.selectedTagsCollection.fetch({
+				success: (collection) => {
+					collection.fetched = true
+					this.appliedTags = collection.map(model => Number(model.toJSON().id))
+					if (this.appliedTags.length > 0) {
+						this.showSystemTags = true
+					}
+				},
+			})
 		},
 
 		/**
@@ -435,6 +471,8 @@ export default {
 					this.fileInfo = await FileInfo(this.davPath)
 					// adding this as fallback because other apps expect it
 					this.fileInfo.dir = this.file.split('/').slice(0, -1).join('/')
+
+					this.fetchTags(this.fileInfo)
 
 					// DEPRECATED legacy views
 					// TODO: remove
@@ -523,6 +561,15 @@ export default {
 		z-index: 2025 !important;
 		top: 0 !important;
 		height: 100% !important;
+	}
+
+	&__select-tags {
+		width: 100%;
+		:deep {
+			.vs__deselect {
+				padding: 0;
+			}
+		}
 	}
 
 	.svg-icon {
