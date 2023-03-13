@@ -50,13 +50,14 @@ use OCP\IUserSession;
 
 class Filesystem {
 	/**
-	 * @var Mount\Manager $mounts
+	 * @var ?Mount\Manager $mounts
 	 */
 	private static $mounts;
 
-	public static $loaded = false;
+	public static bool $loaded = false;
+
 	/**
-	 * @var \OC\Files\View $defaultInstance
+	 * @var ?View $defaultInstance
 	 */
 	private static $defaultInstance;
 
@@ -187,21 +188,20 @@ class Filesystem {
 	public const signal_param_users = 'users';
 
 	/**
-	 * @var \OC\Files\Storage\StorageFactory $loader
+	 * @var ?\OC\Files\Storage\StorageFactory $loader
 	 */
 	private static $loader;
 
-	/** @var bool */
-	private static $logWarningWhenAddingStorageWrapper = true;
+	private static bool $logWarningWhenAddingStorageWrapper = true;
 
 	/**
 	 * @param bool $shouldLog
 	 * @return bool previous value
 	 * @internal
 	 */
-	public static function logWarningWhenAddingStorageWrapper($shouldLog) {
+	public static function logWarningWhenAddingStorageWrapper(bool $shouldLog): bool {
 		$previousValue = self::$logWarningWhenAddingStorageWrapper;
-		self::$logWarningWhenAddingStorageWrapper = (bool) $shouldLog;
+		self::$logWarningWhenAddingStorageWrapper = $shouldLog;
 		return $previousValue;
 	}
 
@@ -313,9 +313,9 @@ class Filesystem {
 	 * resolve a path to a storage and internal path
 	 *
 	 * @param string $path
-	 * @return array an array consisting of the storage and the internal path
+	 * @return array{?\OCP\Files\Storage\IStorage, string} an array consisting of the storage and the internal path
 	 */
-	public static function resolvePath($path) {
+	public static function resolvePath($path): array {
 		$mount = self::getMountManager()->find($path);
 		return [$mount->getStorage(), rtrim($mount->getInternalPath($path), '/')];
 	}
@@ -332,7 +332,7 @@ class Filesystem {
 		return true;
 	}
 
-	public static function initInternal($root) {
+	public static function initInternal($root): bool {
 		if (self::$defaultInstance) {
 			return false;
 		}
@@ -382,11 +382,9 @@ class Filesystem {
 	}
 
 	/**
-	 * get the default filesystem view
-	 *
-	 * @return View
+	 * Get the default filesystem view
 	 */
-	public static function getView() {
+	public static function getView(): View {
 		if (!self::$defaultInstance) {
 			/** @var IUserSession $session */
 			$session = \OC::$server->get(IUserSession::class);
