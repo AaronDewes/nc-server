@@ -326,7 +326,7 @@ interface Storage extends IStorage {
 	 * The local version of the file can be temporary and doesn't have to be persistent across requests
 	 *
 	 * @param string $path
-	 * @return string|bool
+	 * @return string|false
 	 * @since 6.0.0
 	 */
 	public function getLocalFile($path);
@@ -348,7 +348,7 @@ interface Storage extends IStorage {
 	 * get the ETag for a file or folder
 	 *
 	 * @param string $path
-	 * @return string|bool
+	 * @return string|false
 	 * @since 6.0.0
 	 */
 	public function getETag($path);
