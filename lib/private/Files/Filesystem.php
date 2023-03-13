@@ -761,11 +761,8 @@ class Filesystem {
 
 	/**
 	 * get the ETag for a file or folder
-	 *
-	 * @param string $path
-	 * @return string
 	 */
-	public static function getETag($path) {
+	public static function getETag(string $path): string|false {
 		return self::$defaultInstance->getETag($path);
 	}
 }
