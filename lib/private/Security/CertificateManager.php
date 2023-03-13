@@ -233,8 +233,7 @@ class CertificateManager implements ICertificateManager {
 
 	/**
 	 * Get the full local path to the certificate bundle
-	 *
-	 * @return string
+	 * @throws \Exception when getting bundle path fails
 	 */
 	public function getAbsoluteBundlePath(): string {
 		try {
@@ -247,7 +246,10 @@ class CertificateManager implements ICertificateManager {
 					$this->createCertificateBundle();
 				}
 
-				$this->bundlePath = $this->view->getLocalFile($this->getCertificateBundle());
+				$this->bundlePath = $this->view->getLocalFile($this->getCertificateBundle()) ?: null;
+			}
+			if ($this->bundlePath === null) {
+				throw new \Exception('Failed to get absolute bundle path');
 			}
 			return $this->bundlePath;
 		} catch (\Exception $e) {
@@ -255,9 +257,6 @@ class CertificateManager implements ICertificateManager {
 		}
 	}
 
-	/**
-	 * @return string
-	 */
 	private function getPathToCertificates(): string {
 		return '/files_external/';
 	}
