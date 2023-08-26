@@ -12,7 +12,7 @@ import type { Configuration } from 'webpack'
 import webpackConfig from './webpack.config.js'
 
 export default defineConfig({
-	projectId: '37xpdh',
+	projectId: 'bibnim',
 
 	// 16/9 screen ratio
 	viewportWidth: 1280,
