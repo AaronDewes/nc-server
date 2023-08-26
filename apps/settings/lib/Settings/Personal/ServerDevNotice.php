@@ -33,13 +33,9 @@ use OCP\Files\IRootFolder;
 use OCP\IURLGenerator;
 use OCP\IUserSession;
 use OCP\Settings\ISettings;
-use OCP\Support\Subscription\IRegistry;
 use OCP\Util;
 
 class ServerDevNotice implements ISettings {
-
-	/** @var IRegistry */
-	private $registry;
 
 	/** @var IEventDispatcher */
 	private $eventDispatcher;
@@ -56,13 +52,11 @@ class ServerDevNotice implements ISettings {
 	/** @var IURLGenerator */
 	private $urlGenerator;
 
-	public function __construct(IRegistry $registry,
-								IEventDispatcher $eventDispatcher,
+	public function __construct(IEventDispatcher $eventDispatcher,
 								IRootFolder $rootFolder,
 								IUserSession $userSession,
 								IInitialState $initialState,
 								IURLGenerator $urlGenerator) {
-		$this->registry = $registry;
 		$this->eventDispatcher = $eventDispatcher;
 		$this->rootFolder = $rootFolder;
 		$this->userSession = $userSession;

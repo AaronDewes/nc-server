@@ -82,12 +82,6 @@ class Util {
 	 * @since 17.0.0
 	 */
 	public static function hasExtendedSupport(): bool {
-		try {
-			/** @var \OCP\Support\Subscription\IRegistry */
-			$subscriptionRegistry = \OCP\Server::get(\OCP\Support\Subscription\IRegistry::class);
-			return $subscriptionRegistry->delegateHasExtendedSupport();
-		} catch (ContainerExceptionInterface $e) {
-		}
 		return \OC::$server->getConfig()->getSystemValueBool('extendedSupport', false);
 	}
 

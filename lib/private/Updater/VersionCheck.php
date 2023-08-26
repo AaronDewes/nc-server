@@ -29,7 +29,6 @@ namespace OC\Updater;
 use OCP\Http\Client\IClientService;
 use OCP\IConfig;
 use OCP\IUserManager;
-use OCP\Support\Subscription\IRegistry;
 use OCP\Util;
 
 class VersionCheck {
@@ -37,7 +36,6 @@ class VersionCheck {
 		private IClientService $clientService,
 		private IConfig $config,
 		private IUserManager $userManager,
-		private IRegistry $registry,
 	) {
 	}
 
@@ -76,7 +74,7 @@ class VersionCheck {
 		$version['php_minor'] = PHP_MINOR_VERSION;
 		$version['php_release'] = PHP_RELEASE_VERSION;
 		$version['category'] = $this->computeCategory();
-		$version['isSubscriber'] = (int) $this->registry->delegateHasValidSubscription();
+		$version['isSubscriber'] = (int) false;
 		$versionString = implode('x', $version);
 
 		//fetch xml data from updater

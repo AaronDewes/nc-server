@@ -38,7 +38,6 @@ use OCP\Notification\IManager;
 use OCP\Notification\INotification;
 use OCP\Notification\INotifier;
 use OCP\RichObjectStrings\IValidator;
-use OCP\Support\Subscription\IRegistry;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Log\LoggerInterface;
 
@@ -49,8 +48,6 @@ class Manager implements IManager {
 	private $userManager;
 	/** @var ICache */
 	protected $cache;
-	/** @var IRegistry */
-	protected $subscription;
 	/** @var LoggerInterface */
 	protected $logger;
 	/** @var Coordinator */
@@ -76,13 +73,11 @@ class Manager implements IManager {
 	public function __construct(IValidator $validator,
 								IUserManager $userManager,
 								ICacheFactory $cacheFactory,
-								IRegistry $subscription,
 								LoggerInterface $logger,
 								Coordinator $coordinator) {
 		$this->validator = $validator;
 		$this->userManager = $userManager;
 		$this->cache = $cacheFactory->createDistributed('notifications');
-		$this->subscription = $subscription;
 		$this->logger = $logger;
 		$this->coordinator = $coordinator;
 
@@ -305,7 +300,8 @@ class Manager implements IManager {
 			 * users overload our infrastructure. For this reason we have to rate-limit the
 			 * use of push notifications. If you need this feature, consider using Nextcloud Enterprise.
 			 */
-			$isFairUse = $this->subscription->delegateHasValidSubscription() || $this->userManager->countSeenUsers() < 1000;
+			// TODO(Fork): Use our own server
+			$isFairUse = $this->userManager->countSeenUsers() < 1000;
 			$pushAllowed = $isFairUse ? 'yes' : 'no';
 			$this->cache->set('push_fair_use', $pushAllowed, 3600);
 		}

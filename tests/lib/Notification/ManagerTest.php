@@ -33,7 +33,6 @@ use OCP\IUserManager;
 use OCP\Notification\IManager;
 use OCP\Notification\INotification;
 use OCP\RichObjectStrings\IValidator;
-use OCP\Support\Subscription\IRegistry;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LoggerInterface;
 use Test\TestCase;
@@ -50,8 +49,6 @@ class ManagerTest extends TestCase {
 	protected $cacheFactory;
 	/** @var ICache|MockObject */
 	protected $cache;
-	/** @var IRegistry|MockObject */
-	protected $subscriptionRegistry;
 	/** @var LoggerInterface|MockObject */
 	protected $logger;
 	/** @var Coordinator|MockObject */
@@ -65,7 +62,6 @@ class ManagerTest extends TestCase {
 		$this->validator = $this->createMock(IValidator::class);
 		$this->userManager = $this->createMock(IUserManager::class);
 		$this->cache = $this->createMock(ICache::class);
-		$this->subscriptionRegistry = $this->createMock(IRegistry::class);
 		$this->logger = $this->createMock(LoggerInterface::class);
 
 		$this->cacheFactory = $this->createMock(ICacheFactory::class);
@@ -78,7 +74,7 @@ class ManagerTest extends TestCase {
 		$this->coordinator->method('getRegistrationContext')
 			->willReturn($this->registrationContext);
 
-		$this->manager = new Manager($this->validator, $this->userManager, $this->cacheFactory, $this->subscriptionRegistry, $this->logger, $this->coordinator);
+		$this->manager = new Manager($this->validator, $this->userManager, $this->cacheFactory, $this->logger, $this->coordinator);
 	}
 
 	public function testRegisterApp(): void {
@@ -152,7 +148,6 @@ class ManagerTest extends TestCase {
 				$this->validator,
 				$this->userManager,
 				$this->cacheFactory,
-				$this->subscriptionRegistry,
 				$this->logger,
 				$this->coordinator,
 			])
@@ -183,7 +178,6 @@ class ManagerTest extends TestCase {
 				$this->validator,
 				$this->userManager,
 				$this->cacheFactory,
-				$this->subscriptionRegistry,
 				$this->logger,
 				$this->coordinator,
 			])
@@ -207,7 +201,6 @@ class ManagerTest extends TestCase {
 				$this->validator,
 				$this->userManager,
 				$this->cacheFactory,
-				$this->subscriptionRegistry,
 				$this->logger,
 				$this->coordinator,
 			])
@@ -232,7 +225,6 @@ class ManagerTest extends TestCase {
 				$this->validator,
 				$this->userManager,
 				$this->cacheFactory,
-				$this->subscriptionRegistry,
 				$this->logger,
 				$this->coordinator,
 			])
@@ -248,10 +240,8 @@ class ManagerTest extends TestCase {
 
 	public function dataIsFairUseOfFreePushService(): array {
 		return [
-			[true, 999, true],
-			[true, 1000, true],
-			[false, 999, true],
-			[false, 1000, false],
+			[999, true],
+			[1000, false],
 		];
 	}
 
@@ -261,10 +251,7 @@ class ManagerTest extends TestCase {
 	 * @param int $userCount
 	 * @param bool $isFair
 	 */
-	public function testIsFairUseOfFreePushService(bool $hasValidSubscription, int $userCount, bool $isFair): void {
-		$this->subscriptionRegistry->method('delegateHasValidSubscription')
-			->willReturn($hasValidSubscription);
-
+	public function testIsFairUseOfFreePushService(int $userCount, bool $isFair): void {
 		$this->userManager->method('countSeenUsers')
 			->willReturn($userCount);
 

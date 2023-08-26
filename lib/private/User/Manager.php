@@ -47,7 +47,6 @@ use OCP\IUserBackend;
 use OCP\IUserManager;
 use OCP\L10N\IFactory;
 use OCP\Server;
-use OCP\Support\Subscription\IAssertion;
 use OCP\User\Backend\IGetRealUIDBackend;
 use OCP\User\Backend\ISearchKnownUsersBackend;
 use OCP\User\Backend\ICheckPasswordBackend;
@@ -380,11 +379,6 @@ class Manager extends PublicEmitter implements IUserManager {
 	 * @throws HintException
 	 */
 	public function createUser($uid, $password) {
-		// DI injection is not used here as IRegistry needs the user manager itself for user count and thus it would create a cyclic dependency
-		/** @var IAssertion $assertion */
-		$assertion = \OC::$server->get(IAssertion::class);
-		$assertion->createUserIsLegit();
-
 		$localBackends = [];
 		foreach ($this->backends as $backend) {
 			if ($backend instanceof Database) {

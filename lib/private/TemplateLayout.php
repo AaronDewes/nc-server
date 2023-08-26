@@ -53,7 +53,6 @@ use OCP\IConfig;
 use OCP\IInitialStateService;
 use OCP\INavigationManager;
 use OCP\IUserSession;
-use OCP\Support\Subscription\IRegistry;
 use OCP\Util;
 
 class TemplateLayout extends \OC_Template {
@@ -189,12 +188,8 @@ class TemplateLayout extends \OC_Template {
 			$this->assign('appid', $appId);
 			$this->assign('bodyid', 'body-public');
 
-			/** @var IRegistry $subscription */
-			$subscription = \OCP\Server::get(IRegistry::class);
-			$showSimpleSignup = $this->config->getSystemValueBool('simpleSignUpLink.shown', true);
-			if ($showSimpleSignup && $subscription->delegateHasValidSubscription()) {
-				$showSimpleSignup = false;
-			}
+			// TODO(fork): Remove this completely
+			$showSimpleSignup = $this->config->getSystemValueBool('simpleSignUpLink.shown', false);
 			$this->assign('showSimpleSignUpLink', $showSimpleSignup);
 		} else {
 			parent::__construct('core', 'layout.base');

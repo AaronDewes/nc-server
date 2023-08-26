@@ -537,18 +537,6 @@ class OC_App {
 	}
 
 	/**
-	 * List all supported apps
-	 *
-	 * @return array
-	 */
-	public function getSupportedApps(): array {
-		/** @var \OCP\Support\Subscription\IRegistry $subscriptionRegistry */
-		$subscriptionRegistry = \OCP\Server::get(\OCP\Support\Subscription\IRegistry::class);
-		$supportedApps = $subscriptionRegistry->delegateGetSupportedApps();
-		return $supportedApps;
-	}
-
-	/**
 	 * List all apps, this is used in apps.php
 	 *
 	 * @return array
@@ -562,7 +550,6 @@ class OC_App {
 		$appList = [];
 		$langCode = \OC::$server->getL10N('core')->getLanguageCode();
 		$urlGenerator = \OC::$server->getURLGenerator();
-		$supportedApps = $this->getSupportedApps();
 
 		foreach ($installedApps as $app) {
 			if (array_search($app, $blacklist) === false) {
@@ -597,10 +584,6 @@ class OC_App {
 				} else {
 					$info['internal'] = false;
 					$info['removable'] = true;
-				}
-
-				if (in_array($app, $supportedApps)) {
-					$info['level'] = self::supportedApp;
 				}
 
 				$appPath = self::getAppPath($app);

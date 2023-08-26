@@ -38,7 +38,6 @@ use OCP\Files\IAppData;
 use OCP\Files\NotFoundException;
 use OCP\Http\Client\IClientService;
 use OCP\IConfig;
-use OCP\Support\Subscription\IRegistry;
 use Psr\Log\LoggerInterface;
 
 abstract class Fetcher {
@@ -55,8 +54,6 @@ abstract class Fetcher {
 	protected $config;
 	/** @var LoggerInterface */
 	protected $logger;
-	/** @var IRegistry */
-	protected $registry;
 
 	/** @var string */
 	protected $fileName;
@@ -71,14 +68,12 @@ abstract class Fetcher {
 								IClientService $clientService,
 								ITimeFactory $timeFactory,
 								IConfig $config,
-								LoggerInterface $logger,
-								IRegistry $registry) {
+								LoggerInterface $logger) {
 		$this->appData = $appDataFactory->get('appstore');
 		$this->clientService = $clientService;
 		$this->timeFactory = $timeFactory;
 		$this->config = $config;
 		$this->logger = $logger;
-		$this->registry = $registry;
 	}
 
 	/**
@@ -107,12 +102,6 @@ abstract class Fetcher {
 			$options['headers'] = [
 				'If-None-Match' => $ETag,
 			];
-		}
-
-		// If we have a valid subscription key, send it to the appstore
-		$subscriptionKey = $this->config->getAppValue('support', 'subscription_key');
-		if ($this->registry->delegateHasValidSubscription() && $subscriptionKey) {
-			$options['headers']['X-NC-Subscription-Key'] = $subscriptionKey;
 		}
 
 		$client = $this->clientService->newClient();

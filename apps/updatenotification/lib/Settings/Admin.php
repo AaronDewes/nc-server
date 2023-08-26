@@ -39,7 +39,6 @@ use OCP\IDateTimeFormatter;
 use OCP\IGroupManager;
 use OCP\L10N\IFactory;
 use OCP\Settings\ISettings;
-use OCP\Support\Subscription\IRegistry;
 use OCP\Util;
 use OCP\IUserManager;
 use Psr\Log\LoggerInterface;
@@ -50,7 +49,6 @@ class Admin implements ISettings {
 	private IGroupManager $groupManager;
 	private IDateTimeFormatter $dateTimeFormatter;
 	private IFactory $l10nFactory;
-	private IRegistry $subscriptionRegistry;
 	private IUserManager $userManager;
 	private LoggerInterface $logger;
 	private IInitialState $initialState;
@@ -61,17 +59,15 @@ class Admin implements ISettings {
 		IGroupManager $groupManager,
 		IDateTimeFormatter $dateTimeFormatter,
 		IFactory $l10nFactory,
-		IRegistry $subscriptionRegistry,
 		IUserManager $userManager,
 		LoggerInterface $logger,
-		IInitialState $initialState 
+		IInitialState $initialState
 	) {
 		$this->config = $config;
 		$this->updateChecker = $updateChecker;
 		$this->groupManager = $groupManager;
 		$this->dateTimeFormatter = $dateTimeFormatter;
 		$this->l10nFactory = $l10nFactory;
-		$this->subscriptionRegistry = $subscriptionRegistry;
 		$this->userManager = $userManager;
 		$this->logger = $logger;
 		$this->initialState = $initialState;

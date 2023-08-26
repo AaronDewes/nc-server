@@ -39,7 +39,6 @@ use OCP\IGroupManager;
 use OCP\IUserManager;
 use OCP\L10N\IFactory;
 use OCP\L10N\ILanguageIterator;
-use OCP\Support\Subscription\IRegistry;
 use OCP\UserInterface;
 use OCP\User\Backend\ICountUsersBackend;
 use OCP\AppFramework\Services\IInitialState;
@@ -61,8 +60,6 @@ class AdminTest extends TestCase {
 	private $groupManager;
 	/** @var IDateTimeFormatter|\PHPUnit\Framework\MockObject\MockObject */
 	private $dateTimeFormatter;
-	/** @var IRegistry|\PHPUnit\Framework\MockObject\MockObject */
-	private $subscriptionRegistry;
 	/** @var IUserManager|\PHPUnit\Framework\MockObject\MockObject */
 	private $userManager;
 	/** @var LoggerInterface|\PHPUnit\Framework\MockObject\MockObject */
@@ -78,18 +75,16 @@ class AdminTest extends TestCase {
 		$this->groupManager = $this->createMock(IGroupManager::class);
 		$this->dateTimeFormatter = $this->createMock(IDateTimeFormatter::class);
 		$this->l10nFactory = $this->createMock(IFactory::class);
-		$this->subscriptionRegistry = $this->createMock(IRegistry::class);
 		$this->userManager = $this->createMock(IUserManager::class);
 		$this->logger = $this->createMock(LoggerInterface::class);
 		$this->initialState = $this->createMock(IInitialState::class);
 
 		$this->admin = new Admin(
-			$this->config, 
-			$this->updateChecker, 
-			$this->groupManager, 
-			$this->dateTimeFormatter, 
-			$this->l10nFactory, 
-			$this->subscriptionRegistry,
+			$this->config,
+			$this->updateChecker,
+			$this->groupManager,
+			$this->dateTimeFormatter,
+			$this->l10nFactory,
 			$this->userManager,
 			$this->logger,
 			$this->initialState
@@ -186,11 +181,6 @@ class AdminTest extends TestCase {
 			->method('get')
 			->with('admin')
 			->willReturn($group);
-
-		$this->subscriptionRegistry
-			->expects($this->once())
-			->method('delegateHasValidSubscription')
-			->willReturn(true);
 
 		$this->initialState->expects($this->once())
 			->method('provideInitialState')
@@ -311,11 +301,6 @@ class AdminTest extends TestCase {
 			->with('admin')
 			->willReturn($group);
 
-		$this->subscriptionRegistry
-			->expects($this->once())
-			->method('delegateHasValidSubscription')
-			->willReturn(true);
-
 		$this->initialState->expects($this->once())
 			->method('provideInitialState')
 			->with('data', [
@@ -434,11 +419,6 @@ class AdminTest extends TestCase {
 			->method('get')
 			->with('admin')
 			->willReturn($group);
-
-		$this->subscriptionRegistry
-			->expects($this->once())
-			->method('delegateHasValidSubscription')
-			->willReturn(true);
 
 		$this->initialState->expects($this->once())
 			->method('provideInitialState')

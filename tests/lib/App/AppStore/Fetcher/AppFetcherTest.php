@@ -34,7 +34,6 @@ use OCP\Http\Client\IClient;
 use OCP\Http\Client\IClientService;
 use OCP\Http\Client\IResponse;
 use OCP\IConfig;
-use OCP\Support\Subscription\IRegistry;
 use Psr\Log\LoggerInterface;
 use Test\TestCase;
 
@@ -51,8 +50,6 @@ class AppFetcherTest extends TestCase {
 	protected $compareVersion;
 	/** @var LoggerInterface|\PHPUnit\Framework\MockObject\MockObject */
 	protected $logger;
-	/** @var IRegistry|\PHPUnit\Framework\MockObject\MockObject */
-	protected $registry;
 	/** @var AppFetcher */
 	protected $fetcher;
 	/** @var string */
@@ -1852,7 +1849,6 @@ EJL3BaQAQaASSsvFrcozYxrQG4VzEg==
 		$this->config = $this->createMock(IConfig::class);
 		$this->compareVersion = new CompareVersion();
 		$this->logger = $this->createMock(LoggerInterface::class);
-		$this->registry = $this->createMock(IRegistry::class);
 
 		$this->fetcher = $this->getMockBuilder(AppFetcher::class)
 			->setMethods(['getChannel'])
@@ -1863,7 +1859,6 @@ EJL3BaQAQaASSsvFrcozYxrQG4VzEg==
 				$this->config,
 				$this->compareVersion,
 				$this->logger,
-				$this->registry,
 			])
 			->getMock();
 
@@ -2155,11 +2150,6 @@ EJL3BaQAQaASSsvFrcozYxrQG4VzEg==
 			->expects($this->once())
 			->method('getTime')
 			->willReturn(1234);
-
-		$this->registry
-			->expects($this->exactly(2))
-			->method('delegateHasValidSubscription')
-			->willReturn(true);
 
 		$file
 			->expects($this->once())

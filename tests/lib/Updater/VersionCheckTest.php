@@ -26,7 +26,6 @@ use OC\Updater\VersionCheck;
 use OCP\Http\Client\IClientService;
 use OCP\IConfig;
 use OCP\IUserManager;
-use OCP\Support\Subscription\IRegistry;
 use OCP\Util;
 
 class VersionCheckTest extends \Test\TestCase {
@@ -34,8 +33,6 @@ class VersionCheckTest extends \Test\TestCase {
 	private $config;
 	/** @var VersionCheck | \PHPUnit\Framework\MockObject\MockObject*/
 	private $updater;
-	/** @var IRegistry | \PHPUnit\Framework\Mo2ckObject\MockObject*/
-	private $registry;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -46,17 +43,12 @@ class VersionCheckTest extends \Test\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->registry = $this->createMock(IRegistry::class);
-		$this->registry
-			->method('delegateHasValidSubscription')
-			->willReturn(false);
 		$this->updater = $this->getMockBuilder(VersionCheck::class)
 			->setMethods(['getUrlContent'])
 			->setConstructorArgs([
 				$clientService,
 				$this->config,
-				$this->createMock(IUserManager::class),
-				$this->registry,
+				$this->createMock(IUserManager::class)
 			])
 			->getMock();
 	}

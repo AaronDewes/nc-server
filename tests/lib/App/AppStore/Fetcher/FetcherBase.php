@@ -33,7 +33,6 @@ use OCP\Http\Client\IClient;
 use OCP\Http\Client\IClientService;
 use OCP\Http\Client\IResponse;
 use OCP\IConfig;
-use OCP\Support\Subscription\IRegistry;
 use Psr\Log\LoggerInterface;
 use Test\TestCase;
 
@@ -50,8 +49,6 @@ abstract class FetcherBase extends TestCase {
 	protected $config;
 	/** @var LoggerInterface|\PHPUnit\Framework\MockObject\MockObject */
 	protected $logger;
-	/** @var IRegistry|\PHPUnit\Framework\MockObject\MockObject */
-	protected $registry;
 	/** @var Fetcher */
 	protected $fetcher;
 	/** @var string */
@@ -71,7 +68,6 @@ abstract class FetcherBase extends TestCase {
 		$this->timeFactory = $this->createMock(ITimeFactory::class);
 		$this->config = $this->createMock(IConfig::class);
 		$this->logger = $this->createMock(LoggerInterface::class);
-		$this->registry = $this->createMock(IRegistry::class);
 	}
 
 	public function testGetWithAlreadyExistingFileAndUpToDateTimestampAndVersion() {
