@@ -17,6 +17,10 @@ class ComposerStaticInit749170dad3f5e7f9ca158f5a9f04f6a2
             'OC\\' => 3,
             'OCP\\' => 4,
         ),
+        'B' => 
+        array (
+            'Bamarni\\Composer\\Bin\\' => 21,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
@@ -32,6 +36,10 @@ class ComposerStaticInit749170dad3f5e7f9ca158f5a9f04f6a2
         array (
             0 => __DIR__ . '/../../..' . '/lib/public',
         ),
+        'Bamarni\\Composer\\Bin\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/bamarni/composer-bin-plugin/src',
+        ),
     );
 
     public static $fallbackDirsPsr4 = array (
@@ -39,6 +47,19 @@ class ComposerStaticInit749170dad3f5e7f9ca158f5a9f04f6a2
     );
 
     public static $classMap = array (
+        'Bamarni\\Composer\\Bin\\ApplicationFactory\\FreshInstanceApplicationFactory' => __DIR__ . '/..' . '/bamarni/composer-bin-plugin/src/ApplicationFactory/FreshInstanceApplicationFactory.php',
+        'Bamarni\\Composer\\Bin\\ApplicationFactory\\NamespaceApplicationFactory' => __DIR__ . '/..' . '/bamarni/composer-bin-plugin/src/ApplicationFactory/NamespaceApplicationFactory.php',
+        'Bamarni\\Composer\\Bin\\BamarniBinPlugin' => __DIR__ . '/..' . '/bamarni/composer-bin-plugin/src/BamarniBinPlugin.php',
+        'Bamarni\\Composer\\Bin\\CommandProvider' => __DIR__ . '/..' . '/bamarni/composer-bin-plugin/src/CommandProvider.php',
+        'Bamarni\\Composer\\Bin\\Command\\BinCommand' => __DIR__ . '/..' . '/bamarni/composer-bin-plugin/src/Command/BinCommand.php',
+        'Bamarni\\Composer\\Bin\\Command\\CouldNotCreateNamespaceDir' => __DIR__ . '/..' . '/bamarni/composer-bin-plugin/src/Command/CouldNotCreateNamespaceDir.php',
+        'Bamarni\\Composer\\Bin\\Config\\Config' => __DIR__ . '/..' . '/bamarni/composer-bin-plugin/src/Config/Config.php',
+        'Bamarni\\Composer\\Bin\\Config\\ConfigFactory' => __DIR__ . '/..' . '/bamarni/composer-bin-plugin/src/Config/ConfigFactory.php',
+        'Bamarni\\Composer\\Bin\\Config\\InvalidBamarniComposerExtraConfig' => __DIR__ . '/..' . '/bamarni/composer-bin-plugin/src/Config/InvalidBamarniComposerExtraConfig.php',
+        'Bamarni\\Composer\\Bin\\Input\\BinInputFactory' => __DIR__ . '/..' . '/bamarni/composer-bin-plugin/src/Input/BinInputFactory.php',
+        'Bamarni\\Composer\\Bin\\Input\\InvalidBinInput' => __DIR__ . '/..' . '/bamarni/composer-bin-plugin/src/Input/InvalidBinInput.php',
+        'Bamarni\\Composer\\Bin\\Logger' => __DIR__ . '/..' . '/bamarni/composer-bin-plugin/src/Logger.php',
+        'Bamarni\\Composer\\Bin\\PublicIO' => __DIR__ . '/..' . '/bamarni/composer-bin-plugin/src/PublicIO.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'OCP\\Accounts\\IAccount' => __DIR__ . '/../../..' . '/lib/public/Accounts/IAccount.php',
         'OCP\\Accounts\\IAccountManager' => __DIR__ . '/../../..' . '/lib/public/Accounts/IAccountManager.php',
@@ -655,11 +676,6 @@ class ComposerStaticInit749170dad3f5e7f9ca158f5a9f04f6a2
         'OCP\\Support\\CrashReport\\IMessageReporter' => __DIR__ . '/../../..' . '/lib/public/Support/CrashReport/IMessageReporter.php',
         'OCP\\Support\\CrashReport\\IRegistry' => __DIR__ . '/../../..' . '/lib/public/Support/CrashReport/IRegistry.php',
         'OCP\\Support\\CrashReport\\IReporter' => __DIR__ . '/../../..' . '/lib/public/Support/CrashReport/IReporter.php',
-        'OCP\\Support\\Subscription\\Exception\\AlreadyRegisteredException' => __DIR__ . '/../../..' . '/lib/public/Support/Subscription/Exception/AlreadyRegisteredException.php',
-        'OCP\\Support\\Subscription\\IAssertion' => __DIR__ . '/../../..' . '/lib/public/Support/Subscription/IAssertion.php',
-        'OCP\\Support\\Subscription\\IRegistry' => __DIR__ . '/../../..' . '/lib/public/Support/Subscription/IRegistry.php',
-        'OCP\\Support\\Subscription\\ISubscription' => __DIR__ . '/../../..' . '/lib/public/Support/Subscription/ISubscription.php',
-        'OCP\\Support\\Subscription\\ISupportedApps' => __DIR__ . '/../../..' . '/lib/public/Support/Subscription/ISupportedApps.php',
         'OCP\\SystemTag\\ISystemTag' => __DIR__ . '/../../..' . '/lib/public/SystemTag/ISystemTag.php',
         'OCP\\SystemTag\\ISystemTagManager' => __DIR__ . '/../../..' . '/lib/public/SystemTag/ISystemTagManager.php',
         'OCP\\SystemTag\\ISystemTagManagerFactory' => __DIR__ . '/../../..' . '/lib/public/SystemTag/ISystemTagManagerFactory.php',
@@ -1696,8 +1712,6 @@ class ComposerStaticInit749170dad3f5e7f9ca158f5a9f04f6a2
         'OC\\Streamer' => __DIR__ . '/../../..' . '/lib/private/Streamer.php',
         'OC\\SubAdmin' => __DIR__ . '/../../..' . '/lib/private/SubAdmin.php',
         'OC\\Support\\CrashReport\\Registry' => __DIR__ . '/../../..' . '/lib/private/Support/CrashReport/Registry.php',
-        'OC\\Support\\Subscription\\Assertion' => __DIR__ . '/../../..' . '/lib/private/Support/Subscription/Assertion.php',
-        'OC\\Support\\Subscription\\Registry' => __DIR__ . '/../../..' . '/lib/private/Support/Subscription/Registry.php',
         'OC\\SystemConfig' => __DIR__ . '/../../..' . '/lib/private/SystemConfig.php',
         'OC\\SystemTag\\ManagerFactory' => __DIR__ . '/../../..' . '/lib/private/SystemTag/ManagerFactory.php',
         'OC\\SystemTag\\SystemTag' => __DIR__ . '/../../..' . '/lib/private/SystemTag/SystemTag.php',
