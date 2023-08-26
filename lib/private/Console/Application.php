@@ -49,7 +49,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class Application {
 	/** @var IConfig */
 	private $config;
-	private SymfonyApplication $application;
+	public SymfonyApplication $application;
 	/** @var IEventDispatcher */
 	private $dispatcher;
 	/** @var IRequest */
