@@ -94,10 +94,7 @@ class ServerDevNotice implements ISettings {
 	 * @return string|null the section ID, e.g. 'sharing'
 	 */
 	public function getSection(): ?string {
-		if ($this->registry->delegateHasValidSubscription()) {
-			return null;
-		}
-
+		// TODO(Fork): This was disabled (return null) for enterprise, should we do that too
 		return 'personal-info';
 	}
 

@@ -99,8 +99,6 @@ class Admin implements ISettings {
 		$isDefaultUpdateServerURL = $updateServerURL === $defaultUpdateServerURL
 			|| strpos($updateServerURL, $defaultCustomerUpdateServerURLPrefix) === 0;
 
-		$hasValidSubscription = $this->subscriptionRegistry->delegateHasValidSubscription();
-
 		$params = [
 			'isNewVersionAvailable' => !empty($updateState['updateAvailable']),
 			'isUpdateChecked' => $lastUpdateCheckTimestamp > 0,
@@ -118,7 +116,8 @@ class Admin implements ISettings {
 			'isDefaultUpdateServerURL' => $isDefaultUpdateServerURL,
 			'updateServerURL' => $updateServerURL,
 			'notifyGroups' => $this->getSelectedGroups($notifyGroups),
-			'hasValidSubscription' => $hasValidSubscription,
+			// TODO(Fork): Should we pass this at all?
+			'hasValidSubscription' => false,
 		];
 		$this->initialState->provideInitialState('data', $params);
 
